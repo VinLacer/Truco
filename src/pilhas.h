@@ -1,6 +1,7 @@
 #ifndef _pilhas_h
 #define _pilhas_h
 
+
 typedef enum naipe{
     Ouros,Espadas,Copas,Paus
 } Naipe;
@@ -27,6 +28,6 @@ void imprimePilha(Pilha *p);
 
 void colocaDado(Carta *c, Pilha *p);
 Carta *retiraDado(Pilha *p);
-Pilha *inicializaPilha();
+Pilha *criaPilha();
 
 #endif

@@ -3,7 +3,7 @@
 
 #include "pilhas.h"
 
-void imprimeCarta(Carta *iterador);
+void imprimeCarta(Carta *c);
 void shuffle(Carta *array[], int length);
 
 #endif

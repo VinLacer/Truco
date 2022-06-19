@@ -44,7 +44,7 @@ $(PROJ_NAME): $(OBJ)
 
 debug: L_FLAGS += -DDEBUG -g
 debug: CC_FLAGS += -DDEBUG -g
-debug: objFolder $(PROJ_NAME)
+debug: remake
 
 objFolder:
 	@ mkdir -p obj

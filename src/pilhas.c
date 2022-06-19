@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "pilhas.h"
+#include "utils.h"
 
 
 void colocaDado(Carta *c, Pilha *p) {
@@ -9,32 +10,22 @@ void colocaDado(Carta *c, Pilha *p) {
 }
 
 Carta *retiraDado(Pilha *p) {
+    Carta *ptr;
     if (p != NULL || p->topo != NULL){
-        Carta *saida = p->topo;
+        ptr = p->topo;
         p->topo = p->topo->prox;
-        return saida;
     }
+    return ptr;
 }
 
-Pilha *inicializaPilha() {
-    Pilha *p;
-    p = (Pilha *)malloc(sizeof(Pilha));
-    for(int v=Quatro;v<=Tres;v++){
-        for(int n=Ouros;n<=Paus;n++){
-            Carta *c = (Carta *)malloc(sizeof(Carta));
-            c->c_Naipe=n;
-            c->c_Valor=v;
-
-            colocaDado(c,p);
-        }
-    }
+Pilha *criaPilha() {
+    Pilha *p = (Pilha *)malloc(sizeof(Pilha));
     return p;
 }
 
 void embaralhaPilha(Pilha *p)
 {
     int tamanho = tamanhoPilha(p);
-    printf("%d\n", tamanho);
     Carta *baralho[tamanho];
     for (int i = 0; i < tamanho; i++)
     {
@@ -49,7 +40,6 @@ void embaralhaPilha(Pilha *p)
     
 }
 
-
 int tamanhoPilha (Pilha *p)
 {
     int tamanho = 0;
@@ -63,9 +53,12 @@ int tamanhoPilha (Pilha *p)
 }
 
 void imprimePilha(Pilha *p) {
+    int contador = 1;
     Carta *iterador;    
     iterador = p->topo;
+
     while (iterador != NULL) {
+        printf("[%d] ",contador++);
       imprimeCarta(iterador); 
       iterador = iterador->prox; 
     }

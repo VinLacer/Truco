@@ -1,10 +1,9 @@
-#include "pilhas.h"
-
+#include "truco.h"
 
 int main()
 {
-Pilha *p = inicializaPilha();
-embaralhaPilha(p);
-imprimePilha(p);
-return 0;
+
+    jogo();
+    return 0;
+
 }
