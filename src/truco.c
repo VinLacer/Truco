@@ -2,18 +2,21 @@
 #include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 void jogo()
 {
     Pilha *baralho = criaBaralho();
-    Jogador *player1 = criaJogador();
-    Jogador *player2 = criaJogador();
+    Jogador *player1 = criaJogador(1);
+    Jogador *player2 = criaJogador(2);
 
     while (!jogoAcabou(player1, player2))
-    {   
-        rodada(player1,player2,baralho);
+    {
+        embaralhaPilha(baralho);
+        rodada(player1, player2, baralho);
+        
     }
-    imprimeVencedor(player1,player2);
+    imprimeVencedor(player1, player2);
 
     free(player1->mao);
     free(player1);
@@ -36,12 +39,11 @@ Pilha *criaBaralho()
             colocaDado(c, p);
         }
     }
-    embaralhaPilha(p);
     return p;
 }
 
 void entregaCartas(Pilha *p, Jogador *j)
-{   
+{
     j->cartadas = 0;
     for (int i = 0; i < TAM_MAO; i++)
     {
@@ -51,60 +53,55 @@ void entregaCartas(Pilha *p, Jogador *j)
 
 void imprimeVencedor(Jogador *player1, Jogador *player2)
 {
-    printf("O JOGADOR %d VENCEU O JOGO!!!!", player1->pontos > player2->pontos ? 1 : 2);
+    printf("O JOGADOR %d VENCEU O JOGO!!!!\n\n\n", player1->pontos > player2->pontos ? 1 : 2);
 }
 
-int rodadaAcabou (Jogador *player1, Jogador *player2)
+int rodadaAcabou(Jogador *player1, Jogador *player2)
 {
-    return player1->cartadas >= CARTADAS || player2->cartadas >= CARTADAS;
+    return player1->cartadas >= CARTADAS(TAM_MAO) || player2->cartadas >= CARTADAS(TAM_MAO);
 }
 
 void rodada(Jogador *player1, Jogador *player2, Pilha *baralho)
 {
-    //int valendo = UmPonto;
+    int valendo = UmPonto;
     entregaCartas(baralho, player1);
     entregaCartas(baralho, player2);
-    
-    int tamanho_pilha1 = tamanhoPilha(player1->mao);
-    //int tamanho_pilha2 = tamanhoPilha(player2->mao);
-    
-    Carta *m1[tamanho_pilha1];
-    //Carta *m2[tamanho_pilha2];
+
     Pilha *mesa = criaPilha();
     Carta *vira = retiraDado(baralho);
+    player1->cartadas = 0;
+    player2->cartadas = 0;
 
-
-    while (!rodadaAcabou(player1,player2))
+    while (!rodadaAcabou(player1, player2))
     {
-        mostraJogo(player1,player2,mesa,vira);
-        int escolha1 = escolheCarta(player1,1);
-        escolheCarta(player2,2);
-        transformaPilha(player1->mao);
-        for (int i = 0; i < tamanho_pilha1; i++)
-        {
-            colocaDado(m1[i],i== escolha1 - 1 ? mesa : player1->mao);
-            free(player1->mao);
-        }
-        
-        //desempilha a mao coloca a carta selecionada na mesa
-        //reempilha o resto da mao
-        //quem ganhou essa cartada
-        //da cartada pra qm ganhou
+        mostraJogo(player1, player2, mesa, vira);
+        fazerJogada(player1, mesa);
+        fazerJogada(player2,mesa);
+        pontuaCartada(mesa,player1,player2);
+        sleep(3);
     }
-    //da ponto pro vencedor
-    free(mesa);
-    free(vira);
+    pontuaRodada(player1, player2,valendo);
+    sleep(3);
+    colocaDado(vira, baralho);
+    desempilhaNaPilha(player1->mao, baralho);
+    desempilhaNaPilha(player2->mao, baralho);
+    desempilhaNaPilha(mesa, baralho);
 }
 
-Jogador *criaJogador(){   
+Jogador *criaJogador(int nJogador)
+{
     Jogador *j = (Jogador *)malloc(sizeof(Jogador));
     j->pontos = 0;
     j->mao = criaPilha();
     j->cartadas = 0;
+    j->nJogador = nJogador;
+    
+    return j;
 }
 
-void mostraJogo (Jogador *player1, Jogador *player2, Pilha *mesa, Carta *vira)
+void mostraJogo(Jogador *player1, Jogador *player2, Pilha *mesa, Carta *vira)
 {
+    system("clear");
     printf("O VIRA É:   ");
     imprimeCarta(vira);
     printf("\nMÃO DO JOGADOR 1:    \n");
@@ -115,15 +112,15 @@ void mostraJogo (Jogador *player1, Jogador *player2, Pilha *mesa, Carta *vira)
     imprimePilha(mesa);
 }
 
-int escolheCarta(Jogador *player, int nJogador)
-{   
+int escolheCarta(Jogador *player)
+{
     int escolha = 0;
     int nCartas = tamanhoPilha(player->mao);
 
     while (escolha <= 0 || escolha > nCartas)
     {
-        printf("JOGADOR %d ESCOLHE CARTA: ",nJogador);
-        scanf("%d",&escolha);
+        printf("JOGADOR %d ESCOLHE CARTA: ", player->nJogador);
+        scanf("%d", &escolha);
     }
     return escolha;
 }
@@ -133,13 +130,52 @@ int jogoAcabou(Jogador *player1, Jogador *player2)
     return player1->pontos >= PONT_MAX || player2->pontos >= PONT_MAX;
 }
 
-void transformaPilha(Pilha *p)
+void fazerJogada(Jogador *player, Pilha *mesa)
 {
-    Carta *c[tamanhoPilha(p)];
-    int i;
-
-    for ( i = 0; i < tamanhoPilha(p); i++)
+    int escolha = escolheCarta(player);
+    int tamanho_pilha = tamanhoPilha(player->mao);
+    Carta *mao[tamanho_pilha];
+    for (int i = 0; i < tamanho_pilha; i++)
     {
-        c[i] = retiraDado(p);
-    }  
+        mao[i] = retiraDado(player->mao);
+    }
+
+    for (int i = tamanho_pilha - 1; i >= 0; i--)
+    {
+        colocaDado(mao[i],i == escolha - 1 ? mesa : player->mao);
+    }
+}
+
+void pontuaCartada (Pilha *mesa, Jogador *player1, Jogador *player2)
+{
+    system("clear");
+    if (mesa->topo->c_Valor > mesa->topo->prox->c_Valor)
+    {
+        printf("JOGADOR %d GANHOU A CARTADA!!!!!\n\n",player2->nJogador);
+        player2->cartadas += 1;
+    }
+    else
+    {   
+        printf("JOGADOR %d GANHOU A CARTADA!!!!!\n\n",player1->nJogador);
+        player1->cartadas += 1;
+    }    
+          
+}
+
+void pontuaRodada(Jogador *player1, Jogador *player2, int valendo)
+{
+    system("clear");
+    if (player1->cartadas >= CARTADAS(TAM_MAO))
+    {
+        player1->pontos += valendo;
+        printf("JOGADOR %d GANHOU A RODADA!!!!!\n\n",player1->nJogador);
+    }
+
+    else
+    {
+        player2->pontos += valendo;
+        printf("JOGADOR %d GANHOU A RODADA!!!!!\n\n",player2->nJogador);
+    }
+    printf("PONTOS JOGADOR %d : %d  \n",player1->nJogador,player1->pontos);
+    printf("PONTOS JOGADOR %d : %d  \n",player2->nJogador,player2->pontos);  
 }
