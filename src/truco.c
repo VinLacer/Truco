@@ -77,19 +77,19 @@ void rodada(Jogador *player1, Jogador *player2, Pilha *baralho)
     while (!rodadaAcabou(player1, player2, valCartada))
     {
         mostraJogo(player1, player2, mesa, vira);
-        
+
         valendo = truco(valendo, player1);
         system("clear");
         mostraJogo(player1, player2, mesa, vira);
         fazerJogada(player1, mesa);
         system("clear");
 
-        valendo = truco(valendo,player2);
+        valendo = truco(valendo, player2);
         system("clear");
         mostraJogo(player1, player2, mesa, vira);
         fazerJogada(player2, mesa);
         system("clear");
-        
+
         valCartada = pontuaCartada(mesa, player1, player2, vira, valCartada);
         sleep(3);
     }
@@ -235,7 +235,7 @@ void pontuaRodada(Jogador *player1, Jogador *player2, int valendo, int valCartad
 int truco(int valendo, Jogador *player)
 {
     int reposta = 0;
-    printf("JOGADOR %d DESEJA TRUCAR OU AUMENTAR A APOSTA?\n\n",player->nJogador);
+    printf("JOGADOR %d DESEJA TRUCAR OU AUMENTAR A APOSTA?\n\n", player->nJogador);
     printf("[1] SIM\n[2] NAO\n");
     scanf("%d", &reposta);
 
@@ -252,7 +252,6 @@ int truco(int valendo, Jogador *player)
             valendo += TresPontos;
             return valendo;
         }
-            
     }
     else
         return valendo;

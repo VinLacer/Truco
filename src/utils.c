@@ -59,8 +59,8 @@ void shuffle(Carta *array[], int length)
 
 void desempilhaNaPilha(Pilha *src, Pilha *dst)
 {
-    while (src->topo != NULL)
-    {
-        colocaDado(retiraDado(src), dst);
-    }
+  while (src->topo != NULL)
+  {
+    colocaDado(retiraDado(src), dst);
+  }
 }
