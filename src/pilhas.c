@@ -65,6 +65,7 @@ void imprimePilha(Pilha *p)
         printf("[%d] ", contador++);
         imprimeCarta(iterador);
         iterador = iterador->prox;
+        
     }
     // printf("  ");
 }
