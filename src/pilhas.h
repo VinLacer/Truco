@@ -1,42 +1,28 @@
 #ifndef _pilhas_h
 #define _pilhas_h
 
-typedef enum naipe
-{
-    Ouros,
-    Espadas,
-    Copas,
-    Paus
+
+typedef enum naipe{
+    Ouros,Espadas,Copas,Paus
 } Naipe;
 
-typedef enum valor
-{
-    Quatro,
-    Cinco,
-    Seis,
-    Sete,
-    Dama,
-    Valete,
-    Rei,
-    As,
-    Dois,
-    Tres
-} Valor;
+typedef enum valor{
+    Quatro, Cinco, Seis, Sete, Dama, Valete, Rei, As, Dois, Tres 
+} Valor ;
 
-typedef struct carta
-{
+typedef struct carta{
     struct carta *prox;
     Naipe c_Naipe;
     Valor c_Valor;
 } Carta;
 
-typedef struct pilha
-{
+typedef struct pilha {
     Carta *topo;
 } Pilha;
 
+
 void embaralhaPilha(Pilha *p);
-int tamanhoPilha(Pilha *p);
+int tamanhoPilha (Pilha *p);
 
 void imprimePilha(Pilha *p);
 

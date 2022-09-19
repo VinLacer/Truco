@@ -234,24 +234,35 @@ void pontuaRodada(Jogador *player1, Jogador *player2, int valendo, int valCartad
 
 int truco(int valendo, Jogador *player)
 {
-    int reposta = 0;
-    printf("JOGADOR %d DESEJA TRUCAR OU AUMENTAR A APOSTA?\n\n", player->nJogador);
+    int pergunta = 0;
+    int aceita = 0;
+    int nJogador = player->nJogador;
+
+    printf("JOGADOR %d DESEJA TRUCAR OU AUMENTAR A APOSTA?\n\n", nJogador == 1 ? 1 : 2);
     printf("[1] SIM\n[2] NAO\n");
-    scanf("%d", &reposta);
+    scanf("%d", &pergunta);
 
-    if (reposta == 1)
+    if (pergunta == 1)
     {
-        if (valendo == UmPonto)
+        printf("JOGADOR %d ACEITA O TRUCO?\n", nJogador == 1 ? 2 : 1);
+        printf("[1] SIM\n[2] NAO\n");
+        scanf("%d", &aceita);
+        if (aceita == 1)
         {
-            valendo = TresPontos;
-            return valendo;
-        }
+            if (valendo == UmPonto)
+            {
+                valendo = TresPontos;
+                return valendo;
+            }
 
-        else
-        {
-            valendo += TresPontos;
-            return valendo;
+            else
+            {
+                valendo += TresPontos;
+                return valendo;
+            }
         }
+        else
+            return valendo;
     }
     else
         return valendo;

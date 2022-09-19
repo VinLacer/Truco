@@ -5,6 +5,7 @@
 
 void imprimeCarta(Carta *c)
 {
+
   switch (c->c_Naipe)
   {
   case Copas:
@@ -39,7 +40,7 @@ void imprimeCarta(Carta *c)
   default:
     printf("%i", c->c_Valor > As ? c->c_Valor - 6 : c->c_Valor + 4);
   }
-  printf("\n");
+  // printf("\n");
 }
 
 void shuffle(Carta *array[], int length)
@@ -59,8 +60,8 @@ void shuffle(Carta *array[], int length)
 
 void desempilhaNaPilha(Pilha *src, Pilha *dst)
 {
-  while (src->topo != NULL)
-  {
-    colocaDado(retiraDado(src), dst);
-  }
+    while (src->topo != NULL)
+    {
+        colocaDado(retiraDado(src), dst);
+    }
 }
