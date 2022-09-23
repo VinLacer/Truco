@@ -5,7 +5,7 @@ Just a simple game coded for the final project of Data Structures 1. This is a s
 I intend to build an IA using a minimax algorithm to turn the game more competitive and fun, and maybe some graphics stuff. In the actual state of the engine, the game is a PLAYER vs PLAYER game and has some issues.
 
 But if you want to test this engine follow the next steps.
-Build Instructions and run:
+## Build and run instructions:
 ```
 $ git clone https://github.com/VinLacer/Truco
 $ cd Truco
