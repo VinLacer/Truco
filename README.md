@@ -14,9 +14,11 @@ $ cd Truco
 $ make run
 ```
 
-## Some prints of the game:
+## Screenshots:
 
-![image](https://user-images.githubusercontent.com/71742380/192006671-694513e3-b8c4-4e20-b3ba-8666642db88a.png)
+<img src = "https://user-images.githubusercontent.com/71742380/192006671-694513e3-b8c4-4e20-b3ba-8666642db88a.png" width = "650" height ="500">
+
+<img src = "https://media.giphy.com/media/c7oYyva9558bnPDSm0/giphy.gif" width="650" height="300">
 
 
 
