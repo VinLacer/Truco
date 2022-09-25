@@ -9,8 +9,6 @@ But if you want to test this engine follow the next steps.
 ```
 $ git clone https://github.com/VinLacer/Truco
 $ cd Truco
-```
-```
 $ make run
 ```
 
